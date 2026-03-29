@@ -1,0 +1,20 @@
+# Safe shell commands allowed by Yukino
+# One command per line, comments start with #
+
+# File operations
+ls, dir, cat, type, echo, mkdir, pwd, cd, clear, cls
+
+# Development tools
+python, python3, pip, pip3, git, code, notepad
+
+# System info
+whoami, date, time, hostname, ipconfig, ifconfig, ping
+
+# Package managers
+npm, node, cargo, rustc
+
+# Text editors
+vim, nano, emacs
+
+# Utilities
+grep, find, tree, which, where

@@ -1,0 +1,82 @@
+# Yukino AI Configuration
+
+# LLM Settings
+llm:
+  provider: openrouter
+  primary_model: meta-llama/llama-3.1-8b-instruct:free
+  fallback_model: microsoft/phi-3-mini-128k-instruct:free
+  second_fallback_model: mistralai/mistral-7b-instruct:free
+  max_tokens: 300
+  temperature: 0.85
+  stream: true
+
+# Speech Recognition (Whisper)
+whisper:
+  model: base.en
+  device: cpu
+  language: en
+
+# Wakeword Detection
+wakeword:
+  method: whisper  # Options: "porcupine" or "whisper"
+  keyword: yukino
+  # For Porcupine (if method is "porcupine"):
+  # access_key: ""  # Get from https://console.picovoice.ai/
+  # sensitivity: 0.5
+  # For Whisper (if method is "whisper"):
+  chunk_duration: 2.0  # seconds
+  check_interval: 0.5  # seconds
+
+# Text-to-Speech
+tts:
+  engine: pyttsx3
+  voice_name: "Microsoft Zira Desktop"  # Windows default female voice
+  rate: 165  # words per minute
+  volume: 0.9  # 0.0 to 1.0
+
+# 3D Avatar
+avatar:
+  vrm_path: data/yukino.vrm
+  max_texture_size: 512  # pixels (VRAM optimization)
+  fps: 30
+  enable_placeholder: true  # Show placeholder if VRM missing
+  auto_blink_interval_min: 3.0  # seconds
+  auto_blink_interval_max: 5.0  # seconds
+
+# User Interface
+ui:
+  width: 380
+  height: 640
+  position: bottom_right  # Options: "bottom_right", "bottom_left", "top_right", "top_left", "center"
+  start_hidden: true
+  conversation_timeout_seconds: 10
+  max_chat_history_visible: 5  # number of exchanges shown
+
+# Memory
+memory:
+  max_turns: 20  # rolling conversation history
+  conversation_file: memory/conversation.json
+  profile_file: memory/user_profile.json
+
+# Audio
+audio:
+  sample_rate: 16000
+  channels: 1
+  vad_aggressiveness: 2  # 0-3, higher = more aggressive
+  silence_duration: 1.5  # seconds of silence before stopping recording
+
+# Actions
+actions:
+  allowlist_file: data/command_allowlist.txt
+  home_dir_only: true  # Restrict file operations to user home directory
+  shell_timeout: 30  # seconds
+
+# Undo System
+undo:
+  max_depth: 20  # maximum actions that can be undone
+
+# Logging
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: yukino.log
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

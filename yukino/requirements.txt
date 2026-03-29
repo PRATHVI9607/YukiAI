@@ -1,0 +1,46 @@
+# Yukino AI Waifu Assistant - Requirements
+
+# Core Dependencies
+openai>=1.12.0
+python-dotenv>=1.0.0
+PyYAML>=6.0.1
+
+# Audio Processing
+sounddevice>=0.4.6
+webrtcvad-wheels>=2.0.10
+openai-whisper>=20231117
+pyttsx3>=2.90
+pygame>=2.5.2
+
+# Wakeword Detection
+pvporcupine>=3.0.0
+
+# PyQt6 GUI Framework
+PyQt6>=6.6.0
+PyQt6-Qt6>=6.6.0
+
+# 3D Rendering
+PyOpenGL>=3.1.7
+PyOpenGL-accelerate>=3.1.7
+pygltflib>=1.16.1
+
+# System Control (Windows)
+pycaw>=20231129  # Windows audio control
+screen-brightness-control>=0.22.0
+pyautogui>=0.9.54
+psutil>=5.9.8
+
+# Utilities
+numpy>=1.24.0
+pillow>=10.2.0
+
+# PyTorch (CPU version for Whisper)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.1.0
+
+# Testing
+pytest>=7.4.3
+pytest-qt>=4.3.1
+pytest-mock>=3.12.0
+pytest-asyncio>=0.23.0
+pytest-cov>=4.1.0
