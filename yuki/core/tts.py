@@ -44,6 +44,13 @@ try:
     PYGAME_AVAILABLE = True
 except ImportError:
     PYGAME_AVAILABLE = False
+
+try:
+    import pyttsx3
+    PYTTSX3_AVAILABLE = True
+except ImportError:
+    PYTTSX3_AVAILABLE = False
+    pyttsx3 = None
     
 logger = logging.getLogger(__name__)
 
@@ -136,6 +143,32 @@ class LuxTTSEngine(QObject):
             except Exception as e:
                 logger.warning(f"Failed to initialize pygame mixer: {e}")
         
+        # Initialize pyttsx3 as fallback
+        self._pyttsx3_engine = None
+        if PYTTSX3_AVAILABLE:
+            try:
+                self._pyttsx3_engine = pyttsx3.init()
+                # Set male voice
+                voices = self._pyttsx3_engine.getProperty('voices')
+                male_voice = None
+                for voice in voices:
+                    # Look for male voice (usually David on Windows)
+                    if 'male' in voice.name.lower() or 'david' in voice.name.lower():
+                        male_voice = voice.id
+                        break
+                if male_voice:
+                    self._pyttsx3_engine.setProperty('voice', male_voice)
+                    logger.info(f"pyttsx3 using male voice: {male_voice}")
+                else:
+                    # Just use first available voice
+                    logger.info("Using default pyttsx3 voice")
+                # Set rate
+                self._pyttsx3_engine.setProperty('rate', 175)  # Normal speaking rate
+                logger.info("pyttsx3 TTS initialized as fallback")
+            except Exception as e:
+                logger.warning(f"Failed to initialize pyttsx3: {e}")
+                self._pyttsx3_engine = None
+        
         # Try to initialize LuxTTS
         self._initialize_luxtts()
     
@@ -194,12 +227,12 @@ class LuxTTSEngine(QObject):
             logger.info(f"Running in {self._fallback_mode} mode")
     
     def is_available(self) -> bool:
-        """Check if TTS is available."""
-        return self._tts_available
+        """Check if TTS is available (LuxTTS or pyttsx3 fallback)."""
+        return self._tts_available or (self._pyttsx3_engine is not None)
     
     def speak(self, text: str, streaming: bool = True):
         """
-        Speak the given text using LuxTTS.
+        Speak the given text using LuxTTS or pyttsx3 fallback.
         
         Args:
             text: Text to speak
@@ -208,12 +241,18 @@ class LuxTTSEngine(QObject):
         if not text or not text.strip():
             return
         
+        # Try pyttsx3 fallback if LuxTTS not available
         if not self._tts_available:
-            logger.warning(f"TTS not available. Text: {text}")
-            self.tts_error.emit("TTS engine not initialized")
-            return
+            if self._pyttsx3_engine:
+                logger.info(f"Using pyttsx3 fallback for: {text[:50]}...")
+                self._speak_with_pyttsx3(text)
+                return
+            else:
+                logger.warning(f"TTS not available. Text: {text}")
+                self.tts_error.emit("TTS engine not initialized")
+                return
         
-        # Add to speech queue
+        # Add to speech queue for LuxTTS
         self._speech_queue.put((text, streaming))
         
         # Start worker thread if not running
@@ -227,6 +266,34 @@ class LuxTTSEngine(QObject):
                     name="LuxTTS-Worker"
                 )
                 self._worker_thread.start()
+    
+    def _speak_with_pyttsx3(self, text: str):
+        """Speak using pyttsx3 (fallback TTS)."""
+        if not self._pyttsx3_engine:
+            return
+        
+        with self._state_lock:
+            self._state = TTSState.SPEAKING
+        
+        self.speaking_started.emit()
+        
+        try:
+            # Split into sentences for better flow
+            sentences = self._split_sentences(text)
+            for sentence in sentences:
+                if self._stop_flag.is_set():
+                    break
+                if sentence.strip():
+                    self._pyttsx3_engine.say(sentence)
+                    self._pyttsx3_engine.runAndWait()
+                    self.sentence_complete.emit(sentence)
+        except Exception as e:
+            logger.error(f"pyttsx3 error: {e}")
+            self.tts_error.emit(str(e))
+        finally:
+            with self._state_lock:
+                self._state = TTSState.IDLE
+            self.speaking_stopped.emit()
     
     def _speech_worker(self):
         """Worker thread for processing speech queue."""
@@ -400,11 +467,17 @@ class LuxTTSEngine(QObject):
     
     def cleanup(self):
         """Clean up resources."""
-        logger.info("Cleaning up LuxTTS engine")
+        logger.info("Cleaning up TTS engine")
         self.stop()
         
         if PYGAME_AVAILABLE:
             pygame.mixer.quit()
+        
+        if self._pyttsx3_engine:
+            try:
+                self._pyttsx3_engine.stop()
+            except:
+                pass
 
 
 def create_tts_engine(config: dict) -> LuxTTSEngine:

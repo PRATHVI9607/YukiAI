@@ -42,12 +42,12 @@ tts:
 
 # User Interface (Minimal Status Window)
 ui:
-  width: 400
-  height: 300
+  width: 450
+  height: 500
   position: bottom_right  # Options: "bottom_right", "bottom_left", "top_right", "top_left", "center"
-  start_hidden: true
-  always_on_top: false  # Toggle in system tray menu
-  conversation_timeout_seconds: 10
+  start_hidden: false
+  always_on_top: true  # Toggle in system tray menu
+  conversation_timeout_seconds: 30
   max_chat_history_visible: 10  # number of exchanges shown
 
 # Memory

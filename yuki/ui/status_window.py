@@ -86,29 +86,102 @@ class StatusWindow(QMainWindow):
     
     def _setup_window(self):
         """Configure main window properties."""
-        self.setWindowTitle("Yuki")
+        self.setWindowTitle("Yuki AI")
         self.resize(self._width, self._height)
+        self.setMinimumSize(380, 280)
         
-        # Window flags
-        flags = Qt.WindowType.Window
+        # Window flags - frameless with rounded corners
+        flags = Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint
         if self._always_on_top:
             flags |= Qt.WindowType.WindowStaysOnTopHint
         self.setWindowFlags(flags)
+        
+        # Transparent background for rounded corners
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         
         # Enable mouse tracking for dragging
         self.setMouseTracking(True)
     
     def _setup_ui(self):
         """Create UI components."""
-        # Central widget
+        # Central widget with rounded corners
         central_widget = QWidget()
+        central_widget.setObjectName("centralWidget")
+        central_widget.setStyleSheet("""
+            #centralWidget {
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 1, y2: 1,
+                    stop: 0 #ffffff,
+                    stop: 0.5 #f8f9fa,
+                    stop: 1 #f0f2f5
+                );
+                border-radius: 20px;
+                border: 1px solid #e5e7eb;
+            }
+        """)
         self.setCentralWidget(central_widget)
         
         # Main layout
         layout = QVBoxLayout()
-        layout.setContentsMargins(10, 10, 10, 10)
-        layout.setSpacing(8)
+        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setSpacing(12)
         central_widget.setLayout(layout)
+        
+        # Title bar with drag handle and close button
+        title_bar = QHBoxLayout()
+        title_bar.setSpacing(8)
+        
+        # App title
+        title_label = QLabel("✨ Yuki AI")
+        title_label.setStyleSheet("""
+            color: #6366f1;
+            font-size: 14pt;
+            font-weight: 700;
+            padding: 4px;
+        """)
+        title_bar.addWidget(title_label)
+        
+        title_bar.addStretch()
+        
+        # Minimize button
+        minimize_btn = QPushButton("─")
+        minimize_btn.setFixedSize(28, 28)
+        minimize_btn.setStyleSheet("""
+            QPushButton {
+                background: #f3f4f6;
+                border: none;
+                border-radius: 14px;
+                color: #6b7280;
+                font-size: 12pt;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background: #e5e7eb;
+            }
+        """)
+        minimize_btn.clicked.connect(self.showMinimized)
+        title_bar.addWidget(minimize_btn)
+        
+        # Close button
+        close_btn = QPushButton("×")
+        close_btn.setFixedSize(28, 28)
+        close_btn.setStyleSheet("""
+            QPushButton {
+                background: #fee2e2;
+                border: none;
+                border-radius: 14px;
+                color: #dc2626;
+                font-size: 16pt;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background: #fecaca;
+            }
+        """)
+        close_btn.clicked.connect(self.hide)
+        title_bar.addWidget(close_btn)
+        
+        layout.addLayout(title_bar)
         
         # Status indicator
         self._status_label = QLabel("● Idle")
@@ -213,40 +286,125 @@ class StatusWindow(QMainWindow):
         self.move(x, y)
     
     def _apply_styles(self):
-        """Apply basic inline styles (will be overridden by styles.qss)."""
+        """Apply professional white gradient theme."""
         self.setStyleSheet("""
             QMainWindow {
-                background-color: #0a0a14;
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 1, y2: 1,
+                    stop: 0 #ffffff,
+                    stop: 0.5 #f8f9fa,
+                    stop: 1 #f0f2f5
+                );
+                border-radius: 16px;
+            }
+            QWidget {
+                background: transparent;
+                font-family: 'Segoe UI', 'SF Pro Display', sans-serif;
             }
             QLabel#statusLabel {
-                color: #e8e8f0;
-                background-color: #1a1a2e;
-                border-radius: 12px;
-                padding: 8px;
-                min-height: 30px;
+                color: #1a1a2e;
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 1, y2: 0,
+                    stop: 0 #e8f4f8,
+                    stop: 1 #f0f4ff
+                );
+                border: 1px solid #d1d5db;
+                border-radius: 20px;
+                padding: 12px 20px;
+                min-height: 36px;
+                font-size: 12pt;
+                font-weight: 600;
             }
             QTextEdit#historyText {
-                background-color: #0d0d1a;
-                color: #e8e8f0;
-                border: 1px solid #3d3060;
-                border-radius: 8px;
-                padding: 8px;
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #ffffff,
+                    stop: 1 #fafbfc
+                );
+                color: #1f2937;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                padding: 12px;
                 font-size: 11pt;
+                line-height: 1.5;
+                selection-background-color: #bfdbfe;
             }
-            QPushButton {
-                background-color: #1e1e30;
-                color: #a78bfa;
-                border: 1px solid #3d3060;
-                border-radius: 8px;
-                padding: 8px 16px;
-                font-size: 10pt;
+            QTextEdit#historyText:focus {
+                border: 1px solid #93c5fd;
+            }
+            QScrollBar:vertical {
+                background: #f3f4f6;
+                width: 8px;
+                border-radius: 4px;
+                margin: 4px 2px;
+            }
+            QScrollBar::handle:vertical {
+                background: #d1d5db;
+                border-radius: 4px;
                 min-height: 30px;
             }
+            QScrollBar::handle:vertical:hover {
+                background: #9ca3af;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+            }
+            QPushButton {
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #ffffff,
+                    stop: 1 #f3f4f6
+                );
+                color: #374151;
+                border: 1px solid #d1d5db;
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-size: 10pt;
+                font-weight: 500;
+                min-height: 36px;
+            }
             QPushButton:hover {
-                background-color: #2d2050;
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #f9fafb,
+                    stop: 1 #e5e7eb
+                );
+                border: 1px solid #9ca3af;
+            }
+            QPushButton:pressed {
+                background: #e5e7eb;
             }
             QPushButton#muteButton {
-                color: #4ade80;
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #ecfdf5,
+                    stop: 1 #d1fae5
+                );
+                color: #065f46;
+                border: 1px solid #a7f3d0;
+            }
+            QPushButton#muteButton:hover {
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #d1fae5,
+                    stop: 1 #a7f3d0
+                );
+            }
+            QPushButton#undoButton {
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #eff6ff,
+                    stop: 1 #dbeafe
+                );
+                color: #1e40af;
+                border: 1px solid #93c5fd;
+            }
+            QPushButton#undoButton:hover {
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 0, y2: 1,
+                    stop: 0 #dbeafe,
+                    stop: 1 #bfdbfe
+                );
             }
         """)
     
@@ -263,19 +421,52 @@ class StatusWindow(QMainWindow):
         
         if status_lower == "idle":
             self._status_label.setText("● Idle")
-            self._status_label.setStyleSheet("color: #9ca3af; background-color: #1a1a2e;")
+            self._status_label.setStyleSheet("""
+                color: #6b7280;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f3f4f6, stop:1 #e5e7eb);
+                border: 1px solid #d1d5db; border-radius: 20px; padding: 12px 20px;
+                font-size: 12pt; font-weight: 600;
+            """)
         elif status_lower == "listening":
-            self._status_label.setText("● Listening")
-            self._status_label.setStyleSheet("color: #4ade80; background-color: #1a3a1a;")
+            self._status_label.setText("● Listening...")
+            self._status_label.setStyleSheet("""
+                color: #059669;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #d1fae5, stop:1 #a7f3d0);
+                border: 1px solid #6ee7b7; border-radius: 20px; padding: 12px 20px;
+                font-size: 12pt; font-weight: 600;
+            """)
         elif status_lower == "thinking":
-            self._status_label.setText("● Thinking")
-            self._status_label.setStyleSheet("color: #fbbf24; background-color: #3a2a1a;")
+            self._status_label.setText("● Thinking...")
+            self._status_label.setStyleSheet("""
+                color: #d97706;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #fef3c7, stop:1 #fde68a);
+                border: 1px solid #fcd34d; border-radius: 20px; padding: 12px 20px;
+                font-size: 12pt; font-weight: 600;
+            """)
         elif status_lower == "speaking":
-            self._status_label.setText("● Speaking")
-            self._status_label.setStyleSheet("color: #60a5fa; background-color: #1a2a3a;")
+            self._status_label.setText("● Speaking...")
+            self._status_label.setStyleSheet("""
+                color: #2563eb;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dbeafe, stop:1 #bfdbfe);
+                border: 1px solid #93c5fd; border-radius: 20px; padding: 12px 20px;
+                font-size: 12pt; font-weight: 600;
+            """)
+        elif status_lower == "muted":
+            self._status_label.setText("● Muted")
+            self._status_label.setStyleSheet("""
+                color: #dc2626;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #fee2e2, stop:1 #fecaca);
+                border: 1px solid #fca5a5; border-radius: 20px; padding: 12px 20px;
+                font-size: 12pt; font-weight: 600;
+            """)
         else:
             self._status_label.setText(f"● {status}")
-            self._status_label.setStyleSheet("color: #e8e8f0; background-color: #1a1a2e;")
+            self._status_label.setStyleSheet("""
+                color: #374151;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f9fafb, stop:1 #f3f4f6);
+                border: 1px solid #d1d5db; border-radius: 20px; padding: 12px 20px;
+                font-size: 12pt; font-weight: 600;
+            """)
         
         logger.debug(f"Status updated: {status}")
     
@@ -287,7 +478,18 @@ class StatusWindow(QMainWindow):
             message: User's message text
         """
         timestamp = datetime.now().strftime("%H:%M")
-        html = f'<div style="text-align: right; margin: 8px 0;"><span style="background-color: #2d1f5e; color: #c9b8ff; padding: 8px 12px; border-radius: 12px 12px 2px 12px; display: inline-block; max-width: 80%;"><b>[{timestamp}] You:</b> {message}</span></div>'
+        html = f'''<div style="text-align: right; margin: 10px 0;">
+            <span style="background: linear-gradient(135deg, #6366f1, #8b5cf6); 
+                         color: white; 
+                         padding: 10px 16px; 
+                         border-radius: 18px 18px 4px 18px; 
+                         display: inline-block; 
+                         max-width: 85%;
+                         font-size: 11pt;
+                         box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);">
+                <b style="font-size: 9pt; opacity: 0.9;">[{timestamp}] You</b><br>{message}
+            </span>
+        </div>'''
         self._history_text.append(html)
         self._scroll_to_bottom()
     
@@ -299,7 +501,19 @@ class StatusWindow(QMainWindow):
             message: Yuki's response text
         """
         timestamp = datetime.now().strftime("%H:%M")
-        html = f'<div style="text-align: left; margin: 8px 0;"><span style="background-color: #1a1a2e; color: #e8e8f0; padding: 8px 12px; border-radius: 12px 12px 12px 2px; display: inline-block; max-width: 80%;"><b>[{timestamp}] Yuki:</b> {message}</span></div>'
+        html = f'''<div style="text-align: left; margin: 10px 0;">
+            <span style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); 
+                         color: #1e293b; 
+                         padding: 10px 16px; 
+                         border-radius: 18px 18px 18px 4px; 
+                         display: inline-block; 
+                         max-width: 85%;
+                         font-size: 11pt;
+                         border: 1px solid #e2e8f0;
+                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                <b style="font-size: 9pt; color: #6366f1;">[{timestamp}] Yuki</b><br>{message}
+            </span>
+        </div>'''
         self._history_text.append(html)
         self._scroll_to_bottom()
     
@@ -311,7 +525,17 @@ class StatusWindow(QMainWindow):
             message: System message text
         """
         timestamp = datetime.now().strftime("%H:%M")
-        html = f'<div style="text-align: center; margin: 8px 0;"><span style="background-color: #1e1e30; color: #9ca3af; padding: 4px 8px; border-radius: 8px; display: inline-block; font-size: 9pt;"><i>[{timestamp}] {message}</i></span></div>'
+        html = f'''<div style="text-align: center; margin: 12px 0;">
+            <span style="background: #f1f5f9; 
+                         color: #64748b; 
+                         padding: 6px 14px; 
+                         border-radius: 12px; 
+                         display: inline-block; 
+                         font-size: 9pt;
+                         font-style: italic;">
+                {timestamp} • {message}
+            </span>
+        </div>'''
         self._history_text.append(html)
         self._scroll_to_bottom()
     
