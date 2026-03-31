@@ -28,9 +28,9 @@ class TestYukiBrain:
     def test_model_fallback_order(self):
         """Test model fallback configuration."""
         models = [
-            "meta-llama/llama-3.1-8b-instruct:free",
-            "microsoft/phi-3-mini-128k-instruct:free",
-            "mistralai/mistral-7b-instruct:free"
+            "google/gemma-3-27b-it:free",
+            "qwen/qwen3-coder:free",
+            "nvidia/nemotron-3-nano-30b-a3b:free"
         ]
         
         # Should have at least 3 fallback models

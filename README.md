@@ -20,7 +20,7 @@
 ### 🧠 Intelligent Personality
 - **Character-accurate responses**: Yuki's sharp intellect, dry wit, and hidden warmth
 - **Context-aware memory**: Remembers last 20 conversation turns
-- **LLM-powered**: Uses OpenRouter free API (meta-llama/llama-3.1-8b-instruct)
+- **LLM-powered**: Uses OpenRouter free API (google/gemma-3-27b-it)
 - **Streaming generation**: Low-latency responses with sentence-by-sentence TTS
 
 ### 💻 PC Control
@@ -215,8 +215,8 @@
    ```
 
 3. **OpenRouter streaming**:
-   - Primary model: `meta-llama/llama-3.1-8b-instruct:free`
-   - Fallback models: `microsoft/phi-3-mini-128k-instruct:free`, `mistralai/mistral-7b-instruct:free`
+   - Primary model: `google/gemma-3-27b-it:free`
+   - Fallback models: `qwen/qwen3-coder:free`, `nvidia/nemotron-3-nano-30b-a3b:free`
    - Streaming enabled: Tokens arrive incrementally
    - Headers: `HTTP-Referer` and `X-Title` for tracking
 
@@ -564,8 +564,8 @@ Edit `yuki/config.yaml` to customize behavior:
 
 ```yaml
 llm:
-  primary_model: meta-llama/llama-3.1-8b-instruct:free
-  fallback_model: microsoft/phi-3-mini-128k-instruct:free
+  primary_model: google/gemma-3-27b-it:free
+  fallback_model: qwen/qwen3-coder:free
   max_tokens: 300
   temperature: 0.85  # 0.0-1.0, higher = more creative
   stream: true

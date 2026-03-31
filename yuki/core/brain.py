@@ -121,10 +121,10 @@ class YukiBrain:
             api_key=api_key
         )
         
-        # Model configuration
-        self._primary_model = config.get("primary_model", "meta-llama/llama-3.1-8b-instruct:free")
-        self._fallback_model = config.get("fallback_model", "microsoft/phi-3-mini-128k-instruct:free")
-        self._second_fallback = config.get("second_fallback_model", "mistralai/mistral-7b-instruct:free")
+        # Model configuration - using verified free OpenRouter models
+        self._primary_model = config.get("primary_model", "google/gemma-3-27b-it:free")
+        self._fallback_model = config.get("fallback_model", "qwen/qwen3-coder:free")
+        self._second_fallback = config.get("second_fallback_model", "nvidia/nemotron-3-nano-30b-a3b:free")
         self._max_tokens = config.get("max_tokens", 300)
         self._temperature = config.get("temperature", 0.85)
         self._stream = config.get("stream", True)

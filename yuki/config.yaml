@@ -1,11 +1,11 @@
 # Yuki AI Configuration
 
-# LLM Settings
+# LLM Settings - Using verified free OpenRouter models
 llm:
   provider: openrouter
-  primary_model: meta-llama/llama-3.1-8b-instruct:free
-  fallback_model: microsoft/phi-3-mini-128k-instruct:free
-  second_fallback_model: mistralai/mistral-7b-instruct:free
+  primary_model: google/gemma-3-27b-it:free
+  fallback_model: qwen/qwen3-coder:free
+  second_fallback_model: nvidia/nemotron-3-nano-30b-a3b:free
   max_tokens: 300
   temperature: 0.85
   stream: true
