@@ -196,18 +196,18 @@ pytest-mock                     # Mocking support
 - **User permission:** Always ask before executing actions (built into personality)
 - **VRAM optimization:** Only avatar uses GPU, everything else CPU-based
 
-## Critical Path (REVISED)
+## Critical Path (REVISED - 70% Complete)
 
 1. ✅ Project structure setup
 2. ✅ Configuration system
 3. ✅ Core audio pipeline (listener + wakeword)
 4. ✅ LLM integration + personality
-5. 🔄 **UPDATING: LuxTTS integration** (replacing pyttsx3)
-6. 🔄 **UPDATING: Minimal status window** (replacing complex overlay)
+5. ✅ **LuxTTS integration** (complete!)
+6. ✅ **Minimal status window** (complete!)
 7. ✅ Action modules (all complete)
 8. ✅ Undo system
 9. ❌ ~~Avatar renderer~~ (REMOVED)
-10. 🔜 Full integration + testing
+10. 🔄 **Final integration in progress** (main.py + tests)
 
 ## Success Criteria (REVISED)
 
