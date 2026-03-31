@@ -1,5 +1,5 @@
 """
-Main window for Yukino desktop overlay.
+Main window for Yuki desktop overlay.
 
 Frameless, always-on-top, draggable window with system tray integration.
 """
@@ -33,9 +33,9 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class YukinoMainWindow(QMainWindow):
+class YukiMainWindow(QMainWindow):
     """
-    Main overlay window for Yukino.
+    Main overlay window for Yuki.
     
     Features:
     - Frameless and transparent
@@ -99,7 +99,7 @@ class YukinoMainWindow(QMainWindow):
         self._setup_system_tray()
         self._setup_auto_hide()
         
-        logger.info("YukinoMainWindow initialized")
+        logger.info("YukiMainWindow initialized")
     
     def _setup_window(self) -> None:
         """Configure window properties."""
@@ -124,7 +124,7 @@ class YukinoMainWindow(QMainWindow):
         self.setWindowOpacity(self._opacity)
         
         # Title (for taskbar)
-        self.setWindowTitle("Yukino AI")
+        self.setWindowTitle("Yuki AI")
         
         logger.debug("Window setup complete")
     
@@ -166,7 +166,7 @@ class YukinoMainWindow(QMainWindow):
             self._tray_icon = QSystemTrayIcon(self)
             
             # Try to load icon
-            icon_path = Path("yukino/ui/icon.png")
+            icon_path = Path("Yuki/ui/icon.png")
             if icon_path.exists():
                 self._tray_icon.setIcon(QIcon(str(icon_path)))
             else:
@@ -177,12 +177,12 @@ class YukinoMainWindow(QMainWindow):
             tray_menu = QMenu()
             
             # Show action
-            show_action = QAction("Show Yukino", self)
+            show_action = QAction("Show Yuki", self)
             show_action.triggered.connect(self.show_window)
             tray_menu.addAction(show_action)
             
             # Hide action
-            hide_action = QAction("Hide Yukino", self)
+            hide_action = QAction("Hide Yuki", self)
             hide_action.triggered.connect(self.hide_window)
             tray_menu.addAction(hide_action)
             
@@ -201,7 +201,7 @@ class YukinoMainWindow(QMainWindow):
             
             # Show tray icon
             self._tray_icon.show()
-            self._tray_icon.setToolTip("Yukino AI Assistant")
+            self._tray_icon.setToolTip("Yuki AI Assistant")
             
             logger.info("System tray initialized")
             
@@ -360,7 +360,7 @@ class YukinoMainWindow(QMainWindow):
         logger.debug("Window cleaned up")
 
 
-def create_main_window(config: dict) -> YukinoMainWindow:
+def create_main_window(config: dict) -> YukiMainWindow:
     """
     Factory function to create main window.
     
@@ -368,6 +368,6 @@ def create_main_window(config: dict) -> YukinoMainWindow:
         config: UI configuration dict
     
     Returns:
-        Initialized YukinoMainWindow instance
+        Initialized YukiMainWindow instance
     """
-    return YukinoMainWindow(config)
+    return YukiMainWindow(config)

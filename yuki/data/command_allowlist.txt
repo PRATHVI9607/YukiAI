@@ -1,4 +1,4 @@
-# Safe shell commands allowed by Yukino
+# Safe shell commands allowed by Yuki
 # One command per line, comments start with #
 
 # File operations

@@ -1,4 +1,4 @@
-# Yukino AI Configuration
+# Yuki AI Configuration
 
 # LLM Settings
 llm:
@@ -19,7 +19,7 @@ whisper:
 # Wakeword Detection
 wakeword:
   method: whisper  # Options: "porcupine" or "whisper"
-  keyword: yukino
+  keyword: Yuki
   # For Porcupine (if method is "porcupine"):
   # access_key: ""  # Get from https://console.picovoice.ai/
   # sensitivity: 0.5
@@ -36,7 +36,7 @@ tts:
 
 # 3D Avatar
 avatar:
-  vrm_path: data/yukino.vrm
+  vrm_path: data/Yuki.vrm
   max_texture_size: 512  # pixels (VRAM optimization)
   fps: 30
   enable_placeholder: true  # Show placeholder if VRM missing
@@ -78,5 +78,5 @@ undo:
 # Logging
 logging:
   level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
-  file: yukino.log
+  file: Yuki.log
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

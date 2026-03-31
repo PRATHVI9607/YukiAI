@@ -43,10 +43,10 @@ env/
 Thumbs.db
 desktop.ini
 
-# Yukino specific
-yukino/memory/conversation.json
-yukino/memory/user_profile.json
-yukino/data/yukino.vrm
+# Yuki specific
+Yuki/memory/conversation.json
+Yuki/memory/user_profile.json
+Yuki/data/Yuki.vrm
 *.log
 
 # Testing

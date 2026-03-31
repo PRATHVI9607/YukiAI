@@ -1,5 +1,5 @@
 """
-Status bar widget for Yukino.
+Status bar widget for Yuki.
 
 Displays current state (idle/listening/thinking/speaking) and system info.
 """
@@ -24,8 +24,8 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class YukinoStatus(Enum):
-    """Yukino status states."""
+class YukiStatus(Enum):
+    """Yuki status states."""
     IDLE = "idle"
     LISTENING = "listening"
     THINKING = "thinking"
@@ -51,20 +51,20 @@ class StatusBar(QWidget):
     
     # Status colors (RGBA)
     STATUS_COLORS = {
-        YukinoStatus.IDLE: "#88AA88",       # Green
-        YukinoStatus.LISTENING: "#8888FF",  # Blue
-        YukinoStatus.THINKING: "#FFAA44",   # Orange
-        YukinoStatus.SPEAKING: "#FF88AA",   # Pink
-        YukinoStatus.ERROR: "#FF4444",      # Red
+        YukiStatus.IDLE: "#88AA88",       # Green
+        YukiStatus.LISTENING: "#8888FF",  # Blue
+        YukiStatus.THINKING: "#FFAA44",   # Orange
+        YukiStatus.SPEAKING: "#FF88AA",   # Pink
+        YukiStatus.ERROR: "#FF4444",      # Red
     }
     
     # Status display text
     STATUS_TEXT = {
-        YukinoStatus.IDLE: "Idle",
-        YukinoStatus.LISTENING: "Listening...",
-        YukinoStatus.THINKING: "Thinking...",
-        YukinoStatus.SPEAKING: "Speaking...",
-        YukinoStatus.ERROR: "Error",
+        YukiStatus.IDLE: "Idle",
+        YukiStatus.LISTENING: "Listening...",
+        YukiStatus.THINKING: "Thinking...",
+        YukiStatus.SPEAKING: "Speaking...",
+        YukiStatus.ERROR: "Error",
     }
     
     def __init__(self, config: dict):
@@ -83,7 +83,7 @@ class StatusBar(QWidget):
         self._show_info = config.get("show_info", True)
         
         # Current state
-        self._current_status = YukinoStatus.IDLE
+        self._current_status = YukiStatus.IDLE
         self._info_text = ""
         
         # Animation
@@ -116,7 +116,7 @@ class StatusBar(QWidget):
         layout.addWidget(self._indicator_label)
         
         # Status text
-        self._status_label = QLabel(self.STATUS_TEXT[YukinoStatus.IDLE])
+        self._status_label = QLabel(self.STATUS_TEXT[YukiStatus.IDLE])
         status_font = QFont()
         status_font.setBold(True)
         status_font.setPointSize(10)
@@ -164,7 +164,7 @@ class StatusBar(QWidget):
     def _update_animation(self) -> None:
         """Update pulsing animation."""
         # Only pulse for active states
-        if self._current_status in [YukinoStatus.LISTENING, YukinoStatus.THINKING, YukinoStatus.SPEAKING]:
+        if self._current_status in [YukiStatus.LISTENING, YukiStatus.THINKING, YukiStatus.SPEAKING]:
             self._animation_phase += 0.1
             if self._animation_phase > 6.28:  # 2*pi
                 self._animation_phase = 0.0
@@ -185,12 +185,12 @@ class StatusBar(QWidget):
         color = self.STATUS_COLORS[self._current_status]
         self._indicator_label.setStyleSheet(f"color: {color};")
     
-    def set_status(self, status: YukinoStatus) -> None:
+    def set_status(self, status: YukiStatus) -> None:
         """
         Set current status.
         
         Args:
-            status: YukinoStatus enum value
+            status: YukiStatus enum value
         """
         if status == self._current_status:
             return
@@ -211,23 +211,23 @@ class StatusBar(QWidget):
     
     def set_idle(self) -> None:
         """Set status to idle."""
-        self.set_status(YukinoStatus.IDLE)
+        self.set_status(YukiStatus.IDLE)
     
     def set_listening(self) -> None:
         """Set status to listening."""
-        self.set_status(YukinoStatus.LISTENING)
+        self.set_status(YukiStatus.LISTENING)
     
     def set_thinking(self) -> None:
         """Set status to thinking."""
-        self.set_status(YukinoStatus.THINKING)
+        self.set_status(YukiStatus.THINKING)
     
     def set_speaking(self) -> None:
         """Set status to speaking."""
-        self.set_status(YukinoStatus.SPEAKING)
+        self.set_status(YukiStatus.SPEAKING)
     
     def set_error(self) -> None:
         """Set status to error."""
-        self.set_status(YukinoStatus.ERROR)
+        self.set_status(YukiStatus.ERROR)
     
     def set_info(self, text: str) -> None:
         """
@@ -248,7 +248,7 @@ class StatusBar(QWidget):
         """Clear info text."""
         self.set_info("")
     
-    def get_status(self) -> YukinoStatus:
+    def get_status(self) -> YukiStatus:
         """Get current status."""
         return self._current_status
     

@@ -1,4 +1,4 @@
-# Yukino AI Voice Assistant - Implementation Plan (REVISED)
+# Yuki AI Voice Assistant - Implementation Plan (REVISED)
 
 **Status:** Architecture Change - Refactoring to Voice-Only  
 **Progress:** Core systems complete, refactoring UI for voice-only mode  
@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-Building **Yukino** - a Python voice-based AI assistant based on Yukino Yukinoshita from OreGairu. She runs as a background voice agent that wakes on voice command, responds in character with realistic voice synthesis, and controls the PC. All processing is local except LLM (OpenRouter free API).
+Building **Yuki** - a Python voice-based AI assistant based on Yuki Yukishita from OreGairu. She runs as a background voice agent that wakes on voice command, responds in character with realistic voice synthesis, and controls the PC. All processing is local except LLM (OpenRouter free API).
 
 **Target Hardware:**
 - GPU: RTX 2050, 4GB VRAM (minimal usage - LuxTTS only if needed)
@@ -15,9 +15,9 @@ Building **Yukino** - a Python voice-based AI assistant based on Yukino Yukinosh
 
 ## Core Requirements (REVISED)
 
-1. **Voice-activated wake system** - Background service, responds to "Hey Yukino"
+1. **Voice-activated wake system** - Background service, responds to "Hey Yuki"
 2. **High-quality TTS** - LuxTTS for realistic voice cloning and natural speech
-3. **Personality-driven LLM** - OpenRouter API with Yukino Yukinoshita character
+3. **Personality-driven LLM** - OpenRouter API with Yuki Yukishita character
 4. **PC Control** - File ops, shell commands, system controls (volume, brightness, etc.)
 5. **Undo System** - Reversible actions with 20-action history
 6. **Minimal status UI** - Small text window showing conversation + status
@@ -32,7 +32,7 @@ This allows testing each component before adding complexity.
 ## Architecture (REVISED - Voice-Only)
 
 ```
-yukino/
+Yuki/
 ├── main.py                    # Entry point, signal routing
 ├── config.yaml                # All configuration
 ├── .env                       # API keys (gitignored)
@@ -59,7 +59,7 @@ yukino/
 │   ├── conversation.json      # Rolling 20-turn history
 │   └── user_profile.json      # User name + preferences
 ├── data/
-│   ├── yukino_voice.wav       # Reference audio for voice cloning (NEW)
+│   ├── Yuki_voice.wav       # Reference audio for voice cloning (NEW)
 │   └── command_allowlist.txt  # Safe shell commands ✅
 └── tests/
     ├── test_brain.py
@@ -127,7 +127,7 @@ pytest-mock                     # Mocking support
 - **Toggle:** `config.yaml` → `wakeword.method: "porcupine" | "whisper"`
 
 ### LuxTTS Voice Synthesis (NEW)
-- **Voice cloning:** Uses reference audio file (yukino_voice.wav) for consistent character voice
+- **Voice cloning:** Uses reference audio file (Yuki_voice.wav) for consistent character voice
 - **Quality:** 48kHz output, clear and natural speech
 - **Speed:** 150x realtime on GPU, faster than realtime on CPU
 - **Efficiency:** <1GB VRAM, can run on CPU if needed
@@ -141,7 +141,7 @@ pytest-mock                     # Mocking support
 - **Memory:** Last 20 conversation turns
 
 ### Personality System
-**Yukino Yukinoshita character:**
+**Yuki Yukishita character:**
 - Razor-sharp intellect, blunt and precise
 - Outward coldness masking genuine care
 - Formal Japanese registers ("sou desu ne", "ara", "maa")
@@ -181,7 +181,7 @@ pytest-mock                     # Mocking support
 - [ ] Undo stack rollback ✅
 - [ ] Memory persistence across sessions
 - [ ] OpenRouter API with all three fallback models
-- [ ] Yukino personality consistency
+- [ ] Yuki personality consistency
 - [ ] Graceful error handling
 - [ ] Audio cues for state changes (listening, thinking, speaking)
 
@@ -212,7 +212,7 @@ pytest-mock                     # Mocking support
 ## Success Criteria (REVISED)
 
 The app is complete when:
-1. ✅ Yukino wakes on voice command (wakeword system working)
+1. ✅ Yuki wakes on voice command (wakeword system working)
 2. ✅ Responds in character with accurate personality (LLM working)
 3. ✅ All action modules work with undo support (complete)
 4. 🔄 **High-quality voice synthesis with LuxTTS** (in progress)

@@ -1,7 +1,7 @@
 """
 Chat panel widget for conversation display.
 
-Scrollable chat history with user and Yukino messages.
+Scrollable chat history with user and Yuki messages.
 """
 
 import logging
@@ -40,9 +40,9 @@ class MessageBubble(QFrame):
         Initialize message bubble.
         
         Args:
-            speaker: Speaker name ("User" or "Yukino")
+            speaker: Speaker name ("User" or "Yuki")
             message: Message text
-            is_user: True if user message, False if Yukino
+            is_user: True if user message, False if Yuki
         """
         super().__init__()
         
@@ -117,7 +117,7 @@ class ChatPanel(QWidget):
     
     Features:
     - Scrollable message history
-    - User and Yukino message bubbles
+    - User and Yuki message bubbles
     - Auto-scroll to bottom on new messages
     - Message limit (keeps last N messages)
     - Clear history function
@@ -214,7 +214,7 @@ class ChatPanel(QWidget):
         Add a message to the chat.
         
         Args:
-            speaker: Speaker name ("User" or "Yukino")
+            speaker: Speaker name ("User" or "Yuki")
             message: Message text
         """
         if not message.strip():
@@ -279,14 +279,14 @@ class ChatPanel(QWidget):
         """
         self.add_message("User", message)
     
-    def add_yukino_message(self, message: str) -> None:
+    def add_Yuki_message(self, message: str) -> None:
         """
-        Add a Yukino message.
+        Add a Yuki message.
         
         Args:
-            message: Yukino message text
+            message: Yuki message text
         """
-        self.add_message("Yukino", message)
+        self.add_message("Yuki", message)
     
     def add_system_message(self, message: str) -> None:
         """

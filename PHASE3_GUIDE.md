@@ -1,14 +1,14 @@
 # Phase 3 Implementation Guide - Action Modules
 
 **Status:** Ready to implement (all dependencies satisfied)  
-**Location:** `yukino/actions/`  
+**Location:** `Yuki/actions/`  
 **Dependencies:** undo_stack (✅ done)
 
 ---
 
 ## Overview
 
-Phase 3 implements all PC control action modules that Yukino can execute.
+Phase 3 implements all PC control action modules that Yuki can execute.
 Each module integrates with the undo stack for reversible operations.
 
 ---
@@ -42,7 +42,7 @@ class FileOps:
 - `folder_delete`: Store path + full tree dict (recreate on undo)
 - `file_move`: Store src + dst (move back on undo)
 
-**Error Messages (Yukino voice):**
+**Error Messages (Yuki voice):**
 - Path outside home: "No. I won't access files outside your home directory."
 - File exists: "That file already exists. Choose a different name."
 - Not found: "...that doesn't exist. Check the path."
@@ -78,13 +78,13 @@ ipconfig, ifconfig, ping, code, notepad
 ```python
 {
     "success": bool,
-    "message": str,  # Yukino's response
+    "message": str,  # Yuki's response
     "output": str,   # Command output (if success)
     "error": str     # Error message (if failed)
 }
 ```
 
-**Yukino Responses:**
+**Yuki Responses:**
 - Blocked: "No. I won't run that command. It's not on the allowlist."
 - Success: f"Done. Output: {output}"
 - Failed: f"That command failed. {error}"
@@ -196,7 +196,7 @@ f"https://www.google.com/search?q={urllib.parse.quote(query)}"
 - [ ] Use logging (not print)
 - [ ] Handle errors gracefully
 - [ ] Return proper dict format
-- [ ] Use Yukino-style messages
+- [ ] Use Yuki-style messages
 - [ ] Push to undo stack before destructive actions
 - [ ] Test error cases
 
@@ -215,11 +215,11 @@ After creating modules, they need to be registered:
 
 ```python
 # In main.py or wherever we initialize:
-from yukino.actions.file_ops import FileOps
-from yukino.actions.shell_exec import ShellExec
-from yukino.actions.system_ctrl import SystemCtrl
-from yukino.actions.app_ctrl import AppCtrl
-from yukino.actions.browser_ctrl import BrowserCtrl
+from Yuki.actions.file_ops import FileOps
+from Yuki.actions.shell_exec import ShellExec
+from Yuki.actions.system_ctrl import SystemCtrl
+from Yuki.actions.app_ctrl import AppCtrl
+from Yuki.actions.browser_ctrl import BrowserCtrl
 
 # Create instances
 file_ops = FileOps(undo_stack)
@@ -249,9 +249,9 @@ Each module should be testable:
 
 ---
 
-## Yukino Response Style
+## Yuki Response Style
 
-Remember to use Yukino's personality in all messages:
+Remember to use Yuki's personality in all messages:
 
 **Success:**
 - "Done. The file was created."
@@ -270,7 +270,7 @@ Remember to use Yukino's personality in all messages:
 ## File Locations
 
 ```
-yukino/actions/
+Yuki/actions/
 ├── __init__.py          (already exists)
 ├── file_ops.py          (create)
 ├── shell_exec.py        (create)
@@ -278,7 +278,7 @@ yukino/actions/
 ├── app_ctrl.py          (create)
 └── browser_ctrl.py      (create)
 
-yukino/data/
+Yuki/data/
 └── command_allowlist.txt (create with defaults)
 ```
 

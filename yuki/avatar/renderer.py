@@ -80,7 +80,7 @@ class VRMRenderer(QOpenGLWidget):
         super().__init__(parent)
         
         self._config = config
-        self._vrm_path = Path(config.get("vrm_path", "data/yukino.vrm"))
+        self._vrm_path = Path(config.get("vrm_path", "data/Yuki.vrm"))
         self._fps = config.get("fps", 30)
         self._enable_placeholder = config.get("enable_placeholder", True)
         
@@ -270,7 +270,7 @@ class VRMRenderer(QOpenGLWidget):
             
             # Text
             painter.setPen(QColor(150, 150, 170))
-            painter.drawText(10, h - 10, "Yukino (Placeholder)")
+            painter.drawText(10, h - 10, "Yuki (Placeholder)")
             
             painter.end()
             return

@@ -76,13 +76,13 @@ class ActionRouter:
             intent: Parsed intent dict with keys:
                 - intent: Intent type string
                 - params: Dict of parameters
-                - confirmation_message: Yukino's confirmation question (optional)
-                - spoken_response: Yukino's response after action (optional)
+                - confirmation_message: Yuki's confirmation question (optional)
+                - spoken_response: Yuki's response after action (optional)
         
         Returns:
             Result dict with keys:
                 - success: bool
-                - message: str (Yukino's spoken response)
+                - message: str (Yuki's spoken response)
                 - needs_confirmation: bool (optional)
                 - confirmation_message: str (optional)
                 - error: str (optional)

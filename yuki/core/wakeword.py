@@ -66,7 +66,7 @@ class WakewordDetector(QObject):
         Args:
             config: Configuration dict with keys:
                 - method: "porcupine" or "whisper"
-                - keyword: Wakeword to detect (e.g., "yukino")
+                - keyword: Wakeword to detect (e.g., "Yuki")
                 - access_key: Picovoice access key (for porcupine method)
                 - sensitivity: Porcupine sensitivity 0.0-1.0 (default: 0.5)
                 - chunk_duration: Whisper chunk duration in seconds (default: 2.0)
@@ -79,7 +79,7 @@ class WakewordDetector(QObject):
         
         self._config = config
         self._method = WakewordMethod(config.get("method", "whisper"))
-        self._keyword = config.get("keyword", "yukino").lower()
+        self._keyword = config.get("keyword", "Yuki").lower()
         
         # Threading
         self._running = False
@@ -117,7 +117,7 @@ class WakewordDetector(QObject):
         
         try:
             # Create Porcupine instance with built-in keywords
-            # Porcupine doesn't have "yukino" built-in, so we use a similar keyword
+            # Porcupine doesn't have "Yuki" built-in, so we use a similar keyword
             # In production, you'd create a custom keyword file
             self._porcupine = pvporcupine.create(
                 access_key=access_key,
@@ -131,7 +131,7 @@ class WakewordDetector(QObject):
             logger.info(f"Porcupine initialized (sample_rate: {self._sample_rate})")
             logger.warning(
                 "Using 'hey siri' keyword as placeholder. "
-                "Create custom 'yukino' keyword at: https://console.picovoice.ai/"
+                "Create custom 'Yuki' keyword at: https://console.picovoice.ai/"
             )
             
         except Exception as e:

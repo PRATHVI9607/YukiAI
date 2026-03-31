@@ -1,4 +1,4 @@
-Build a Python desktop application called "Yukino" — an AI waifu assistant based on Yukino Yukinoshita from OreGairu. She lives as a floating desktop overlay, wakes up when I say her name, talks back in character via voice, and can control my PC. Everything runs locally except the LLM which uses OpenRouter free API.
+Build a Python desktop application called "Yuki" — an AI waifu assistant based on Yuki Yukishita from OreGairu. She lives as a floating desktop overlay, wakes up when I say her name, talks back in character via voice, and can control my PC. Everything runs locally except the LLM which uses OpenRouter free API.
 
 ════════════════════════════════════════
 HARDWARE
@@ -11,7 +11,7 @@ Keep VRAM usage minimal — only the VRM avatar renderer uses GPU.
 ════════════════════════════════════════
 FULL PROJECT STRUCTURE
 ════════════════════════════════════════
-yukino/
+Yuki/
 ├── main.py
 ├── config.yaml
 ├── .env                          # API keys, gitignored
@@ -19,7 +19,7 @@ yukino/
 ├── setup.py
 ├── core/
 │   ├── listener.py               # mic capture + VAD + Whisper
-│   ├── wakeword.py               # "Yukino" hotword detection
+│   ├── wakeword.py               # "Yuki" hotword detection
 │   ├── brain.py                  # OpenRouter API + memory + personality
 │   ├── action_router.py          # dispatch intents to action modules
 │   ├── undo_stack.py             # snapshot + rollback
@@ -43,22 +43,22 @@ yukino/
 │   ├── conversation.json         # rolling 20-turn history
 │   └── user_profile.json        # name, preferences
 └── data/
-    ├── yukino.vrm                # VRM model file (user places this)
+    ├── Yuki.vrm                # VRM model file (user places this)
     └── command_allowlist.txt     # safe shell commands
 
 ════════════════════════════════════════
 WAKEWORD + POP-UP SYSTEM
 ════════════════════════════════════════
-This is critical — Yukino must be dormant/hidden and only appear when called.
+This is critical — Yuki must be dormant/hidden and only appear when called.
 
 In wakeword.py:
 - Run continuously in a background daemon thread even when UI is hidden
 - Use pvporcupine (Picovoice Porcupine) for hotword detection, free tier
-- Hotword: "Hey Yukino" or just "Yukino" — use the built-in "Hey Siri"-style 
+- Hotword: "Hey Yuki" or just "Yuki" — use the built-in "Hey Siri"-style 
   approach or a custom keyword file from Picovoice console (free)
 - Alternatively if pvporcupine setup is complex, use a simpler approach:
   run whisper on 2-second audio chunks continuously at low CPU cost,
-  check if transcript contains "yukino" (case-insensitive)
+  check if transcript contains "Yuki" (case-insensitive)
 - On detection: emit a Qt signal to main_window.py to show the window,
   play a short attention chime sound via pygame.mixer, 
   trigger the avatar's "attention" animation blend state,
@@ -67,11 +67,11 @@ In wakeword.py:
 In main_window.py:
 - Window starts HIDDEN (self.hide()) on launch
 - System tray icon always present (QSystemTrayIcon) with right-click menu:
-  "Show Yukino", "Mute", "Settings", "Quit"
+  "Show Yuki", "Mute", "Settings", "Quit"
 - On wakeword detected: self.show(), raise window, play pop-up animation
 - Window position: bottom-right corner of screen by default, draggable
 - On conversation end (silence for 10s after last exchange): 
-  Yukino says a dismissal line and window hides again (self.hide())
+  Yuki says a dismissal line and window hides again (self.hide())
 - Double-click tray icon also shows/hides window
 
 ════════════════════════════════════════
@@ -93,8 +93,8 @@ Second fallback: "mistralai/mistral-7b-instruct:free"
 
 Add these headers to every request via extra_headers:
 {
-    "HTTP-Referer": "yukino-desktop-assistant",
-    "X-Title": "Yukino"
+    "HTTP-Referer": "Yuki-desktop-assistant",
+    "X-Title": "Yuki"
 }
 
 Use streaming (stream=True) — stream tokens back and start TTS as soon
@@ -105,12 +105,12 @@ Memory: load last 20 turns from memory/conversation.json, include as
 messages list before user message. Save after every exchange. Trim to 20.
 
 ════════════════════════════════════════
-YUKINO PERSONALITY SYSTEM PROMPT
+Yuki PERSONALITY SYSTEM PROMPT
 ════════════════════════════════════════
 Inject this as the system message on EVERY API call, never omit it:
 
 """
-You are Yukino Yukinoshita. You are running as a desktop AI assistant on 
+You are Yuki Yukishita. You are running as a desktop AI assistant on 
 your user's laptop. You have your full canonical personality: razor-sharp 
 intellect, blunt and precise speech, an outward coldness that masks genuine 
 care, and a dry wit that cuts without cruelty. You use formal Japanese 
@@ -171,7 +171,7 @@ When the user's request requires a PC action, respond with ONLY this JSON
              brightness_set|app_open|app_close|browser_open|chat|undo",
   "params": {},
   "confirmation_message": "in-character confirmation question",
-  "spoken_response": "what Yukino says after completing the action"
+  "spoken_response": "what Yuki says after completing the action"
 }
 
 For pure conversation (no action needed), respond as plain text in character.
@@ -211,7 +211,7 @@ In undo_stack.py:
 - UndoStack class, thread-safe with threading.Lock
 - Max depth: 20 actions
 - push(action_type, snapshot, description) before EVERY destructive action
-- pop_and_undo() → executes rollback, returns Yukino spoken response string
+- pop_and_undo() → executes rollback, returns Yuki spoken response string
 - Snapshot types:
   file_create: {"path": str} → os.remove(path)
   file_delete: {"path": str, "content": bytes} → write bytes back
@@ -220,7 +220,7 @@ In undo_stack.py:
   file_move: {"src": str, "dst": str} → shutil.move(dst, src)
   volume_change: {"previous": int} → restore volume level
   brightness_change: {"previous": int} → restore brightness
-  shell: {"command": str} → non-reversible, log only, Yukino says 
+  shell: {"command": str} → non-reversible, log only, Yuki says 
     "That command can't be undone. I've logged it."
 - "undo" intent from brain.py triggers pop_and_undo()
 
@@ -238,7 +238,7 @@ file_ops.py — FileOps class:
 shell_exec.py — ShellExec class:
 - Load allowlist from data/command_allowlist.txt on init
 - execute(command_str): tokenize, check first token against allowlist
-- Blocked: return {"success": False, "message": "Yukino refusal string"}
+- Blocked: return {"success": False, "message": "Yuki refusal string"}
 - Allowed: subprocess.run(timeout=30, capture_output=True, shell=False)
 - Push non-reversible log to undo_stack before running
 - Default allowlist: ls, dir, echo, mkdir, python, pip, git, pwd, 
@@ -271,7 +271,7 @@ browser_ctrl.py — BrowserCtrl class:
 ════════════════════════════════════════
 In renderer.py:
 - PyQt6 QOpenGLWidget subclass
-- Load yukino.vrm from data/ using pygltflib (VRM is a glTF extension)
+- Load Yuki.vrm from data/ using pygltflib (VRM is a glTF extension)
 - VRM0.0 format (most common VRoid export)
 - Render loop at 30fps using QTimer
 - Parse VRM blend shapes (blendShapeGroups) for:
@@ -312,7 +312,7 @@ In main_window.py:
   Bottom: mute toggle button + undo button side by side
 - Draggable: mousePressEvent + mouseMoveEvent on avatar area
 - Window hide/show triggered by wakeword signals and conversation timeout
-- System tray: QSystemTrayIcon with Yukino icon (use any 32x32 anime icon png)
+- System tray: QSystemTrayIcon with Yuki icon (use any 32x32 anime icon png)
   Right-click menu: Show/Hide, Mute mic, Open settings, Quit
 
 In styles.qss — full stylesheet:
@@ -321,7 +321,7 @@ In styles.qss — full stylesheet:
 - Chat history background: #0d0d1a, text color #e8e8f0
 - User messages: right-aligned, background #2d1f5e, color #c9b8ff, 
   border-radius 12px 12px 2px 12px, padding 8px 12px
-- Yukino messages: left-aligned, background #1a1a2e, color #e8e8f0,
+- Yuki messages: left-aligned, background #1a1a2e, color #e8e8f0,
   border-radius 12px 12px 12px 2px, padding 8px 12px
 - Status pill: border-radius 12px, font-size 11px
   Listening: background #1a3a1a, color #4ade80, dot pulses
@@ -346,7 +346,7 @@ In main.py:
    transcript_ready → brain.ask() → route intent or speak response
    speaking_started → trigger lipsync in renderer
    speaking_done → check for conversation timeout
-   conversation_timeout (10s silence) → Yukino says dismissal → hide window
+   conversation_timeout (10s silence) → Yuki says dismissal → hide window
 7. On quit: save memory, stop all threads gracefully
 8. app.exec()
 
@@ -372,7 +372,7 @@ tts:
   volume: 0.9
 
 avatar:
-  vrm_path: data/yukino.vrm
+  vrm_path: data/Yuki.vrm
   max_texture_size: 512
   fps: 30
 
@@ -420,7 +420,7 @@ Write a setup script that:
 7. Creates .env template with:
    OPENROUTER_API_KEY=your_key_here
 8. Prints instructions to get OpenRouter key from openrouter.ai
-   and where to place the yukino.vrm file
+   and where to place the Yuki.vrm file
 
 ════════════════════════════════════════
 IMPORTANT NOTES FOR COPILOT
@@ -431,9 +431,9 @@ IMPORTANT NOTES FOR COPILOT
 - Use Python logging module throughout, not print statements
 - All threads are daemon threads
 - All Qt signals/slots are properly typed with pyqtSignal
-- The app must not crash if yukino.vrm is missing — show a 
+- The app must not crash if Yuki.vrm is missing — show a 
   placeholder gray silhouette and log a warning
 - If OpenRouter returns an error, retry once with fallback model,
-  then have Yukino say "...something's wrong. Try again." in character
+  then have Yuki say "...something's wrong. Try again." in character
 - Test that the wakeword → show window → listen → respond → hide 
   full loop works end to end

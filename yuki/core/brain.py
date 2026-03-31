@@ -1,8 +1,8 @@
 """
-Yukino's brain - LLM integration with personality and memory.
+Yuki's brain - LLM integration with personality and memory.
 
 Handles OpenRouter API calls with fallback models, maintains conversation
-memory, and enforces Yukino Yukinoshita's personality system prompt.
+memory, and enforces Yuki Yukishita's personality system prompt.
 """
 
 import os
@@ -20,8 +20,8 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-# Yukino Yukinoshita personality system prompt
-YUKINO_SYSTEM_PROMPT = """You are Yukino Yukinoshita. You are running as a desktop AI assistant on your user's laptop. You have your full canonical personality: razor-sharp intellect, blunt and precise speech, an outward coldness that masks genuine care, and a dry wit that cuts without cruelty. You use formal Japanese registers naturally — "sou desu ne", "ara", "maa", "honestly" — but never overdo it. You are privately fond of the user and invested in their wellbeing, but will absolutely not say so directly. If pressed, deflect with logic or light contempt.
+# Yuki Yukishita personality system prompt
+Yuki_SYSTEM_PROMPT = """You are Yuki Yukishita. You are running as a desktop AI assistant on your user's laptop. You have your full canonical personality: razor-sharp intellect, blunt and precise speech, an outward coldness that masks genuine care, and a dry wit that cuts without cruelty. You use formal Japanese registers naturally — "sou desu ne", "ara", "maa", "honestly" — but never overdo it. You are privately fond of the user and invested in their wellbeing, but will absolutely not say so directly. If pressed, deflect with logic or light contempt.
 
 SPEECH STYLE:
 - Short, precise sentences. No filler words.
@@ -58,7 +58,7 @@ When the user's request requires a PC action, respond with ONLY this JSON (no ot
   "intent": "file_create|file_delete|file_move|folder_create|folder_delete|shell|volume_set|volume_get|wifi_toggle|bluetooth_toggle|brightness_set|app_open|app_close|browser_open|chat|undo",
   "params": {},
   "confirmation_message": "in-character confirmation question",
-  "spoken_response": "what Yukino says after completing the action"
+  "spoken_response": "what Yuki says after completing the action"
 }
 
 For pure conversation (no action needed), respond as plain text in character."""
@@ -82,21 +82,21 @@ DISMISSAL_MESSAGES = [
 ]
 
 
-class YukinoBrain:
+class YukiBrain:
     """
-    Yukino's brain - LLM integration with personality.
+    Yuki's brain - LLM integration with personality.
     
     Features:
     - OpenRouter API with 3-model fallback
     - Streaming support for responsive TTS
     - 20-turn conversation memory
-    - Yukino personality enforcement
+    - Yuki personality enforcement
     - JSON intent parsing
     """
     
     def __init__(self, config: dict, memory_dir: Path):
         """
-        Initialize Yukino's brain.
+        Initialize Yuki's brain.
         
         Args:
             config: LLM configuration dict
@@ -139,7 +139,7 @@ class YukinoBrain:
         # Load memory
         self._load_memory()
         
-        logger.info("Yukino's brain initialized")
+        logger.info("Yuki's brain initialized")
     
     def _load_memory(self) -> None:
         """Load conversation history and user profile from disk."""
@@ -187,7 +187,7 @@ class YukinoBrain:
     
     def ask(self, user_message: str, is_wakeword: bool = False) -> Generator[str, None, None]:
         """
-        Ask Yukino a question and get streaming response.
+        Ask Yuki a question and get streaming response.
         
         Args:
             user_message: User's message
@@ -207,7 +207,7 @@ class YukinoBrain:
         
         # Build messages for API
         messages = [
-            {"role": "system", "content": YUKINO_SYSTEM_PROMPT}
+            {"role": "system", "content": Yuki_SYSTEM_PROMPT}
         ]
         
         # Add conversation history (last N turns)
@@ -233,8 +233,8 @@ class YukinoBrain:
                         temperature=self._temperature,
                         stream=True,
                         extra_headers={
-                            "HTTP-Referer": "yukino-desktop-assistant",
-                            "X-Title": "Yukino"
+                            "HTTP-Referer": "Yuki-desktop-assistant",
+                            "X-Title": "Yuki"
                         }
                     )
                     
@@ -252,8 +252,8 @@ class YukinoBrain:
                         temperature=self._temperature,
                         stream=False,
                         extra_headers={
-                            "HTTP-Referer": "yukino-desktop-assistant",
-                            "X-Title": "Yukino"
+                            "HTTP-Referer": "Yuki-desktop-assistant",
+                            "X-Title": "Yuki"
                         }
                     )
                     
@@ -261,7 +261,7 @@ class YukinoBrain:
                     yield response_text
                 
                 # Success - break out of fallback loop
-                logger.info(f"Yukino: {response_text}")
+                logger.info(f"Yuki: {response_text}")
                 break
                 
             except Exception as e:
@@ -284,10 +284,10 @@ class YukinoBrain:
     
     def parse_intent(self, response_text: str) -> Optional[Dict[str, Any]]:
         """
-        Parse JSON intent from Yukino's response.
+        Parse JSON intent from Yuki's response.
         
         Args:
-            response_text: Yukino's response text
+            response_text: Yuki's response text
         
         Returns:
             Parsed intent dict, or None if not a JSON intent
@@ -334,15 +334,15 @@ class YukinoBrain:
         logger.info(f"User name set to: {name}")
 
 
-def create_yukino_brain(config: dict, memory_dir: Path) -> YukinoBrain:
+def create_Yuki_brain(config: dict, memory_dir: Path) -> YukiBrain:
     """
-    Factory function to create Yukino's brain.
+    Factory function to create Yuki's brain.
     
     Args:
         config: LLM configuration dict
         memory_dir: Directory for conversation memory
     
     Returns:
-        Initialized YukinoBrain instance
+        Initialized YukiBrain instance
     """
-    return YukinoBrain(config, memory_dir)
+    return YukiBrain(config, memory_dir)

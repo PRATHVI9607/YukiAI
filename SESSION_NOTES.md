@@ -1,4 +1,4 @@
-# Yukino AI - Session Resume Notes
+# Yuki AI - Session Resume Notes
 
 **Session Date:** 2026-03-29  
 **Status:** Phase 4 Complete (Avatar & UI), Ready for Phase 5 (Integration)
@@ -7,7 +7,7 @@
 
 ## Project Context
 
-Building **Yukino AI Waifu Assistant** - A voice-activated desktop AI assistant based on Yukino Yukinoshita from OreGairu. Full specs in `Prompt.md`.
+Building **Yuki AI Waifu Assistant** - A voice-activated desktop AI assistant based on Yuki Yukishita from OreGairu. Full specs in `Prompt.md`.
 
 ---
 
@@ -20,7 +20,7 @@ Building **Yukino AI Waifu Assistant** - A voice-activated desktop AI assistant 
    - Making any changes
 
 2. **📁 File Locations:** 
-   - `plan.md` and `task.md` are in PROJECT ROOT (`C:\Workspace\YukinoAI\`)
+   - `plan.md` and `task.md` are in PROJECT ROOT (`C:\Workspace\YukiAI\`)
    - NOT in .copilot folder
 
 3. **Implementation Choices:**
@@ -46,7 +46,7 @@ Building **Yukino AI Waifu Assistant** - A voice-activated desktop AI assistant 
 - ✅ tts.py - Streaming TTS with Qt signals (346 lines)
 - ✅ listener.py - VAD + Whisper STT (380 lines)
 - ✅ wakeword.py - Dual detection methods (378 lines)
-- ✅ brain.py - OpenRouter + Yukino personality (348 lines)
+- ✅ brain.py - OpenRouter + Yuki personality (348 lines)
 - ✅ action_router.py - Intent dispatcher (345 lines)
 
 ### ✅ Phase 3 Complete - Action Modules (5/5 tasks)
@@ -98,7 +98,7 @@ Ready to implement:
 - ✅ Security: file ops limited to user home directory
 - ✅ Shell commands filtered through allowlist
 
-### Yukino Personality System
+### Yuki Personality System
 - Razor-sharp intellect, blunt and precise
 - Outward coldness masking genuine care
 - Formal Japanese registers ("ara", "sou desu ne", "maa")
@@ -111,12 +111,12 @@ Ready to implement:
 ## Project Structure Created
 
 ```
-C:\Workspace\YukinoAI\
+C:\Workspace\YukiAI\
 ├── plan.md              ← Full technical plan
 ├── task.md              ← Progress tracker (updated)
 ├── SESSION_NOTES.md     ← This file - resume context
 ├── Prompt.md            ← Original requirements
-└── yukino/
+└── Yuki/
     ├── __init__.py
     ├── config.yaml      ← Complete configuration ✅
     ├── requirements.txt ← All dependencies ✅
@@ -168,7 +168,7 @@ C:\Workspace\YukinoAI\
 
 1. **Share Context:**
    ```
-   "I'm resuming the Yukino AI project. 
+   "I'm resuming the Yuki AI project. 
    Please read: plan.md, task.md, and SESSION_NOTES.md"
    ```
 
@@ -218,7 +218,7 @@ CREATE TABLE todo_deps (todo_id TEXT, depends_on TEXT,
 
 ### To Setup (when ready):
 ```bash
-cd C:\Workspace\YukinoAI\yukino
+cd C:\Workspace\YukiAI\Yuki
 python setup.py  # Installs everything, creates defaults
 ```
 
@@ -246,7 +246,7 @@ python setup.py  # Installs everything, creates defaults
 
 ```bash
 # Navigate to project
-cd C:\Workspace\YukinoAI
+cd C:\Workspace\YukiAI
 
 # View progress
 cat task.md
@@ -255,10 +255,10 @@ cat task.md
 cat plan.md
 
 # Check structure
-tree yukino /F
+tree Yuki /F
 
 # When ready to install (with permission):
-cd yukino
+cd Yuki
 python setup.py
 ```
 

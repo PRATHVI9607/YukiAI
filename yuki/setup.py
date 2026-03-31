@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Yukino AI - First-time Setup Script
+Yuki AI - First-time Setup Script
 
 This script performs initial setup:
 1. Installs dependencies from requirements.txt
@@ -104,7 +104,7 @@ def create_command_allowlist() -> bool:
         return True
     
     default_commands = [
-        "# Safe shell commands allowed by Yukino",
+        "# Safe shell commands allowed by Yuki",
         "# One command per line, comments start with #",
         "",
         "# File operations",
@@ -192,7 +192,7 @@ def create_env_template() -> bool:
     env_example = Path(__file__).parent / ".env.example"
     env_file = Path(__file__).parent / ".env"
     
-    env_template = """# Yukino AI Environment Variables
+    env_template = """# Yuki AI Environment Variables
 
 # OpenRouter API Key (required)
 # Get your free API key from: https://openrouter.ai/keys
@@ -231,7 +231,7 @@ def print_final_instructions() -> None:
     """Print final setup instructions."""
     print_header("Setup Complete!")
     
-    print("🎉 Yukino AI setup finished successfully!\n")
+    print("🎉 Yuki AI setup finished successfully!\n")
     print("📝 Next Steps:\n")
     print("1. Get your OpenRouter API key:")
     print("   → Visit: https://openrouter.ai/keys")
@@ -239,21 +239,21 @@ def print_final_instructions() -> None:
     print("   → Copy your API key\n")
     
     print("2. Add your API key to .env file:")
-    print("   → Open: yukino/.env")
+    print("   → Open: Yuki/.env")
     print("   → Replace 'your_key_here' with your actual key\n")
     
     print("3. (Optional) Add a VRM avatar model:")
-    print("   → Place your yukino.vrm file in: yukino/data/")
+    print("   → Place your Yuki.vrm file in: Yuki/data/")
     print("   → Or the app will use a placeholder avatar\n")
     
-    print("4. Run Yukino:")
-    print("   → python yukino/main.py\n")
+    print("4. Run Yuki:")
+    print("   → python Yuki/main.py\n")
     
     print("💡 Tips:")
-    print("   • Say 'Hey Yukino' or 'Yukino' to wake her up")
+    print("   • Say 'Hey Yuki' or 'Yuki' to wake her up")
     print("   • She'll appear in the bottom-right corner")
     print("   • Check system tray for controls")
-    print("   • Edit yukino/config.yaml for customization\n")
+    print("   • Edit Yuki/config.yaml for customization\n")
     
     print("📚 Documentation: See README.md for full details\n")
 
@@ -261,7 +261,7 @@ def print_final_instructions() -> None:
 def main() -> int:
     """Main setup function."""
     print("\n" + "=" * 60)
-    print("  YUKINO AI - FIRST-TIME SETUP")
+    print("  Yuki AI - FIRST-TIME SETUP")
     print("=" * 60)
     
     steps = [

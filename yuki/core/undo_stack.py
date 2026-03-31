@@ -96,7 +96,7 @@ class UndoStack:
         Returns:
             Dict with keys:
                 - success (bool): Whether undo was successful
-                - message (str): Yukino's spoken response
+                - message (str): Yuki's spoken response
                 - error (str, optional): Error message if failed
         """
         with self._lock:

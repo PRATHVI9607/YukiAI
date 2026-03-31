@@ -1,4 +1,4 @@
-# Yukino AI Waifu Assistant - Requirements
+# Yuki AI Waifu Assistant - Requirements
 
 # Core Dependencies
 openai>=1.12.0

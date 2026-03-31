@@ -1,4 +1,4 @@
-# Yukino AI - Task Monitoring
+# Yuki AI - Task Monitoring
 
 ## Current Status: 🎨 PHASE 4 COMPLETE - Avatar & UI Ready!
 
@@ -90,7 +90,7 @@ These tasks are ready to start:
   - **browser_ctrl.py** - URL opening, searches
   - **command_allowlist.txt** - Default safe commands
 - ✅ All modules integrated with undo stack
-- ✅ Yukino personality in all error messages
+- ✅ Yuki personality in all error messages
 - 🎯 Ready for Phase 4: Avatar & UI
 
 ### 2026-03-29 05:05 - Phase 2 Complete
@@ -99,11 +99,11 @@ These tasks are ready to start:
   - **tts.py** - Streaming TTS with Qt signals for lip sync
   - **listener.py** - VAD + Whisper speech recognition
   - **wakeword.py** - Dual detection (Porcupine + Whisper)
-  - **brain.py** - OpenRouter LLM with Yukino personality
+  - **brain.py** - OpenRouter LLM with Yuki personality
   - **action_router.py** - Intent dispatcher with confirmation
 
 ### 2026-03-28 19:02 - Phase 1 Complete
-- ✅ Created complete yukino/ project structure
+- ✅ Created complete Yuki/ project structure
   - 7 subdirectories (core, actions, avatar, ui, memory, data, tests)
   - All __init__.py package files
   - .gitignore for Python and secrets
@@ -192,7 +192,7 @@ These tasks are ready to start:
 
 ## Notes
 
-- **File Locations:** plan.md and task.md are in project root (C:\Workspace\YukinoAI\) for easy access
+- **File Locations:** plan.md and task.md are in project root (C:\Workspace\YukiAI\) for easy access
 - Always ask permission before running commands or making changes
 - Refer to Prompt.md for detailed specifications
 - Each task should be confirmed before execution
