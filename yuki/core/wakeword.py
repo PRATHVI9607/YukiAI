@@ -296,6 +296,11 @@ class WakewordDetector(QObject):
             try:
                 # Collect audio chunks
                 audio_frame = self._audio_queue.get(timeout=0.1)
+                
+                # Flatten if 2D (frames, channels) -> 1D
+                if audio_frame.ndim > 1:
+                    audio_frame = audio_frame.flatten()
+                
                 audio_buffer.append(audio_frame)
                 
                 # Check if we have enough audio
@@ -309,31 +314,35 @@ class WakewordDetector(QObject):
                     # Trim to exact chunk size
                     audio_data = audio_data[:chunk_frames]
                     
-                    # Convert to float32 for Whisper
+                    # Convert to float32 for Whisper (normalize int16 to -1.0 to 1.0)
                     audio_float = audio_data.astype(np.float32) / 32768.0
                     
-                    # Transcribe
-                    result = self._whisper_model.transcribe(
-                        audio_float,
-                        language="en",
-                        fp16=False
-                    )
-                    
-                    transcript = result["text"].strip().lower()
-                    
-                    # Check if keyword is in transcript
-                    if self._keyword in transcript:
-                        logger.info(f"Wakeword detected by Whisper: '{transcript}'")
+                    # Transcribe with minimal settings for speed
+                    try:
+                        result = self._whisper_model.transcribe(
+                            audio_float,
+                            language="en",
+                            fp16=False,
+                            verbose=False
+                        )
                         
-                        # Emit signal
-                        try:
-                            self.wakeword_detected.emit()
-                        except:
-                            pass
+                        transcript = result["text"].strip().lower()
                         
-                        # Delay to avoid duplicate detections
-                        time.sleep(1.0)
-                        audio_buffer.clear()
+                        # Check if keyword is in transcript
+                        if self._keyword in transcript:
+                            logger.info(f"Wakeword detected by Whisper: '{transcript}'")
+                            
+                            # Emit signal
+                            try:
+                                self.wakeword_detected.emit()
+                            except:
+                                pass
+                            
+                            # Delay to avoid duplicate detections
+                            time.sleep(1.0)
+                            audio_buffer.clear()
+                    except Exception as e:
+                        logger.debug(f"Whisper transcribe error: {e}")
                     
                     # Small delay between checks
                     time.sleep(self._check_interval)
